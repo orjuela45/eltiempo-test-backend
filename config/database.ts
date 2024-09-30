@@ -1,4 +1,5 @@
 import { Sequelize } from "sequelize-typescript";
+import * as models from "../models";
 
 export const sequelize: Sequelize = new Sequelize({
   database: process.env.DB_NAME,
@@ -8,4 +9,5 @@ export const sequelize: Sequelize = new Sequelize({
   port: Number(process.env.DB_PORT),
   dialect: "mysql",
   logging: false,
+  models: Object.values(models)
 })
