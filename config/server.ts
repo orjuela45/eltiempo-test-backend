@@ -1,6 +1,9 @@
 import express from 'express'
 import cors from 'cors'
+import createHttpError from 'http-errors';
 import { sequelize } from './'
+import routes from '../routes'
+import { errorHandler } from '../middlewares'
 
 export class Server {
   private app: express.Application
@@ -11,7 +14,9 @@ export class Server {
     this.port = Number(process.env.PORT) || 8080
 
     this.middlewares()
+    this.routes()
     this.databaseConnection()
+    this.app.use(errorHandler)
   }
 
   listen() {
@@ -32,6 +37,13 @@ export class Server {
     }).catch((error) => {
       console.error('Unable to connect to the database:', error)
     })
+  }
+
+  routes() {
+    this.app.use('/api', routes)
+    this.app.use((req, res, next) => {
+      next(createHttpError(404, 'Ruta no encontrada'));
+    });
   }
 
 }
