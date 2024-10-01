@@ -5,7 +5,9 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "dev:node": "npx nodemon --env-file=.env dist/index.js",
-    "dev:tsc": "npx tsc --watch"
+    "dev:tsc": "npx tsc --watch",
+    "build": "npx tsc",
+    "start": "node --env-file=.env dist/index.js"
   },
   "author": "",
   "license": "ISC",
