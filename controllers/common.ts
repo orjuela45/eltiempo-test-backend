@@ -32,7 +32,9 @@ export class CommonController<T extends Model, R extends CommonRepository<T>> {
   getAll = async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     try {
       const { filters } = req.body
-      const result = await this.repository.getAll({where: filters});
+      let pagination = {}
+      if (req.query) pagination = {limit: Number(req.query.limit), offset: Number(req.query.offset)}
+      const result = await this.repository.getAll({where: filters}, pagination);
       res.json(result);
     } catch (error) {
       next(error)

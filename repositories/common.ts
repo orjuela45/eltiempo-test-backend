@@ -1,9 +1,10 @@
 import { Model, ModelCtor } from 'sequelize-typescript'
 import createHttpError from 'http-errors'
-import { Attributes, WhereOptions } from 'sequelize'
+import { Attributes } from 'sequelize'
 import {
   CommonGetOneByPkInterface,
   CommonParamsToFindInterface,
+  PaginationInterface,
 } from '../interfaces'
 
 export class CommonRepository<T extends Model> {
@@ -41,13 +42,14 @@ export class CommonRepository<T extends Model> {
     return result
   }
 
-  async getAll(params: CommonParamsToFindInterface<T>): Promise<T[]> {
+  async getAll(params: CommonParamsToFindInterface<T>, pagination?: PaginationInterface): Promise<T[]> {
     const { where, customMessage, include, attributes, subQuery } = params
     const result = await this.model.findAll({
       where,
       include,
       attributes: attributes as Attributes<T>,
       subQuery,
+      ...pagination
     })
     if (!result)
       throw createHttpError.NotFound(customMessage ?? 'Recursos no encontrado')

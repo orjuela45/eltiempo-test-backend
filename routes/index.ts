@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import CommonRouter from './common'
 import { CommonController } from '../controllers'
-import { Article, Author, Content } from '../models'
+import { Author, Content } from '../models'
 import { ArticleRepository, CommonRepository } from '../repositories'
 
 const router = Router()

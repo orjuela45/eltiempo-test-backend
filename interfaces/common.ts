@@ -13,3 +13,9 @@ export interface CommonGetOneByPkInterface<T extends Model>
   extends CommonParamsToFindInterface<T> {
   id: number
 }
+
+export interface PaginationInterface {
+  limit?: number
+  offset?: number
+  total?: number
+}

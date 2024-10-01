@@ -1,4 +1,4 @@
-import { CommonGetOneByPkInterface, CommonParamsToFindInterface } from "../interfaces";
+import { CommonGetOneByPkInterface, CommonParamsToFindInterface, PaginationInterface } from "../interfaces";
 import { Article, Author, Content } from "../models";
 import { CommonRepository } from "./common";
 
@@ -32,7 +32,7 @@ export class ArticleRepository extends CommonRepository<Article> {
     })
   }
 
-  async getAll(params: CommonParamsToFindInterface<Article>): Promise<Article[]> {
+  async getAll(params: CommonParamsToFindInterface<Article>, pagination?: PaginationInterface): Promise<Article[]> {
     const { where, customMessage } = params
     return await super.getAll({
       where,
@@ -40,6 +40,6 @@ export class ArticleRepository extends CommonRepository<Article> {
       include: [
         {model: Author},
       ]
-    })
+    }, pagination)
   }
 }
