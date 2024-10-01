@@ -1,7 +1,10 @@
-import { Model, ModelCtor } from "sequelize-typescript";
+import { Model, ModelCtor } from 'sequelize-typescript'
 import createHttpError from 'http-errors'
-import { WhereOptions } from "sequelize";
-import { CommonGetOneByPkInterface, CommonParamsToFindInterface } from "../interfaces";
+import { Attributes, WhereOptions } from 'sequelize'
+import {
+  CommonGetOneByPkInterface,
+  CommonParamsToFindInterface,
+} from '../interfaces'
 
 export class CommonRepository<T extends Model> {
   public model: ModelCtor<T>
@@ -11,24 +14,43 @@ export class CommonRepository<T extends Model> {
   }
 
   async getOneByPK(params: CommonGetOneByPkInterface<T>): Promise<T> {
+    const { include, attributes, subQuery } = params
     const { id } = params
-    const result = await this.model.findByPk(id)
-    if (!result) throw createHttpError.NotFound(params.customMessage ?? 'Recurso no encontrado')
+    const result = await this.model.findByPk(id, {
+      include,
+      attributes: attributes as Attributes<T>,
+      subQuery,
+    })
+    if (!result)
+      throw createHttpError.NotFound(
+        params.customMessage ?? 'Recurso no encontrado'
+      )
     return result
   }
-  
 
   async getOneByFilters(params: CommonParamsToFindInterface<T>): Promise<T> {
-    const { where, customMessage } = params
-    const result = await this.model.findOne({ where })
-    if (!result) throw createHttpError.NotFound(customMessage ?? 'Recurso no encontrado')
+    const { where, customMessage, include, attributes, subQuery } = params
+    const result = await this.model.findOne({
+      where,
+      include,
+      attributes: attributes as Attributes<T>,
+      subQuery,
+    })
+    if (!result)
+      throw createHttpError.NotFound(customMessage ?? 'Recurso no encontrado')
     return result
   }
 
   async getAll(params: CommonParamsToFindInterface<T>): Promise<T[]> {
-    const { where, customMessage } = params
-    const result = await this.model.findAll({ where })
-    if (!result) throw createHttpError.NotFound(customMessage ?? 'Recursos no encontrado')
+    const { where, customMessage, include, attributes, subQuery } = params
+    const result = await this.model.findAll({
+      where,
+      include,
+      attributes: attributes as Attributes<T>,
+      subQuery,
+    })
+    if (!result)
+      throw createHttpError.NotFound(customMessage ?? 'Recursos no encontrado')
     return result
   }
 }
