@@ -15,7 +15,7 @@ export class ArticleRepository extends CommonRepository<Article> {
       customMessage,
       include: [ 
         {model: Author},
-        {model: Content}
+        {model: Content, order: [['order', 'ASC']]}
        ]
     })
   }
@@ -27,7 +27,7 @@ export class ArticleRepository extends CommonRepository<Article> {
       customMessage,
       include: [
         {model: Author},
-        {model: Content}
+        {model: Content, order: [['order', 'ASC']]}
       ]
     })
   }
